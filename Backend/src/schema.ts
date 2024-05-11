@@ -32,10 +32,10 @@ type People {
 type Query {
   divide(number1: Int!, number2: Int!): Float
   multiply(number1: Int!, number2: Int!): Float
-  closestColor(hexa: String!): String
   getTracks: [Track!]!
   getFilms: [Film]!
   getPeople: [People]!
+  getUsers: [User]!
 }
 
 type Mutation {
@@ -43,6 +43,7 @@ type Mutation {
   incrementLikes(id: ID!): IncrementLikesResponse
   createUser(username: String!, password: String!): CreateUserResponse
   signIn(username: String!, password: String!): SignInResponse
+  createArticle(title: String!, description: String!): CreateArticleResponse
 }
 
 type CreateUserResponse {
@@ -59,9 +60,32 @@ type SignInResponse {
   token: String
 }
 
+type CreateArticleResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  article: Article
+}
+
 type User {
   id: ID!
   username: String!
+  articles: [Article]
+}
+
+type Article {
+  id: ID!
+  title: String!
+  description: String!
+  user: User!
+  numberOfLikes: Int
+  comments: [Commentaire]
+}
+
+type Commentaire {
+  id: ID!
+  content: String!
+  article: Article!
 }
 
 type IncrementTrackViewsResponse {

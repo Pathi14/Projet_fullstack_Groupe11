@@ -13,24 +13,26 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model TodoList {
-  id       String     @id @unique @default(uuid())
-  name     String
-  todoItem TodoItem[]
-  userId   String
-  user     User       @relation(fields: [userId], references: [id])
-}
-
-model TodoItem {
-  id          String   @id @unique @default(uuid())
-  description String
-  todoList    TodoList @relation(fields: [todoListId], references: [id])
-  todoListId  String
-}
-
 model User {
-  id        String     @id @unique @default(uuid())
-  username  String     @unique
-  password  String
-  todoLists TodoList[]
+  id       String    @id @unique @default(uuid())
+  username String    @unique
+  password String
+  article  Article[]
+}
+
+model Article {
+  id            String        @id @unique @default(uuid())
+  title         String
+  description   String
+  userId        String
+  commentaire   Commentaire[]
+  numberOfLikes Int           @default(0)
+  user          User          @relation(fields: [userId], references: [id])
+}
+
+model Commentaire {
+  id        String  @id @unique @default(uuid())
+  content   String
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id])
 }

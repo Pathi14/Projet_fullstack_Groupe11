@@ -1,8 +1,11 @@
 import { GraphQLError } from "graphql";
-import { getClosestColor } from "./colors.js";
 import { Resolvers } from "./types.js";
 import { createUser } from "./mutations/createUser.js";
 import { signIn } from "./mutations/signIn.js";
+import { createArticle } from "./mutations/createArticle.js";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 
 export const resolvers: Resolvers = {
   Query: {
@@ -13,17 +16,18 @@ export const resolvers: Resolvers = {
       return number1 / number2
     },
     multiply: (parent, {number1, number2}, context, info) => number1 * number2,
-    closestColor: (parent, {hexa}) => {
-      if(!hexa.match(/^#[0-9a-fA-F]{6}/)) {
-        throw new GraphQLError(`${hexa} does not match a color pattern`)
-      }
-      return getClosestColor(hexa, ["#FF5733", "#33FF57", "#3357FF"])
-    },
     getTracks: (_, __, {dataSources}) => {
       return dataSources.trackAPI.getTracks()
     },
     getFilms: (_, __, {dataSources}) => dataSources.ghibliAPI.getFilms(),
     getPeople: (_, __, {dataSources}) => dataSources.ghibliAPI.getPeople(),
+    getUsers: async () => {
+      return await prisma.user.findMany({
+        include: {
+          article: true,
+        },
+      });
+    },
   },
   Mutation: {
     incrementTrackViews: async (_, {id}, {dataSources}) => {
@@ -63,7 +67,8 @@ export const resolvers: Resolvers = {
       }
     },
     createUser: createUser,
-    signIn: signIn
+    signIn: signIn,
+    createArticle: createArticle,
   },
   Film: {
     people: ({people}, _, {dataSources}) => {

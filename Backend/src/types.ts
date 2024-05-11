@@ -19,11 +19,36 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Article = {
+  __typename?: 'Article';
+  comments?: Maybe<Array<Maybe<Commentaire>>>;
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  numberOfLikes?: Maybe<Scalars['Int']['output']>;
+  title: Scalars['String']['output'];
+  user: User;
+};
+
 export type Author = {
   __typename?: 'Author';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
+};
+
+export type Commentaire = {
+  __typename?: 'Commentaire';
+  article: Article;
+  content: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+};
+
+export type CreateArticleResponse = {
+  __typename?: 'CreateArticleResponse';
+  article?: Maybe<Article>;
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
 };
 
 export type CreateUserResponse = {
@@ -59,10 +84,17 @@ export type IncrementTrackViewsResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createArticle?: Maybe<CreateArticleResponse>;
   createUser?: Maybe<CreateUserResponse>;
   incrementLikes?: Maybe<IncrementLikesResponse>;
   incrementTrackViews?: Maybe<IncrementTrackViewsResponse>;
   signIn?: Maybe<SignInResponse>;
+};
+
+
+export type MutationCreateArticleArgs = {
+  description: Scalars['String']['input'];
+  title: Scalars['String']['input'];
 };
 
 
@@ -97,17 +129,12 @@ export type People = {
 
 export type Query = {
   __typename?: 'Query';
-  closestColor?: Maybe<Scalars['String']['output']>;
   divide?: Maybe<Scalars['Float']['output']>;
   getFilms: Array<Maybe<Film>>;
   getPeople: Array<Maybe<People>>;
   getTracks: Array<Track>;
+  getUsers: Array<Maybe<User>>;
   multiply?: Maybe<Scalars['Float']['output']>;
-};
-
-
-export type QueryClosestColorArgs = {
-  hexa: Scalars['String']['input'];
 };
 
 
@@ -142,6 +169,7 @@ export type Track = {
 
 export type User = {
   __typename?: 'User';
+  articles?: Maybe<Array<Maybe<Article>>>;
   id: Scalars['ID']['output'];
   username: Scalars['String']['output'];
 };
@@ -217,8 +245,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Article: ResolverTypeWrapper<Article>;
   Author: ResolverTypeWrapper<AuthorModel>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Commentaire: ResolverTypeWrapper<Commentaire>;
+  CreateArticleResponse: ResolverTypeWrapper<CreateArticleResponse>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
   Film: ResolverTypeWrapper<FilmModel>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -237,8 +268,11 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Article: Article;
   Author: AuthorModel;
   Boolean: Scalars['Boolean']['output'];
+  Commentaire: Commentaire;
+  CreateArticleResponse: CreateArticleResponse;
   CreateUserResponse: CreateUserResponse;
   Film: FilmModel;
   Float: Scalars['Float']['output'];
@@ -255,10 +289,35 @@ export type ResolversParentTypes = {
   User: User;
 };
 
+export type ArticleResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
+  comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Commentaire']>>>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  numberOfLikes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type AuthorResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommentaireResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Commentaire'] = ResolversParentTypes['Commentaire']> = {
+  article?: Resolver<ResolversTypes['Article'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateArticleResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateArticleResponse'] = ResolversParentTypes['CreateArticleResponse']> = {
+  article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -294,6 +353,7 @@ export type IncrementTrackViewsResponseResolvers<ContextType = DataSourceContext
 };
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createArticle?: Resolver<Maybe<ResolversTypes['CreateArticleResponse']>, ParentType, ContextType, RequireFields<MutationCreateArticleArgs, 'description' | 'title'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'password' | 'username'>>;
   incrementLikes?: Resolver<Maybe<ResolversTypes['IncrementLikesResponse']>, ParentType, ContextType, RequireFields<MutationIncrementLikesArgs, 'id'>>;
   incrementTrackViews?: Resolver<Maybe<ResolversTypes['IncrementTrackViewsResponse']>, ParentType, ContextType, RequireFields<MutationIncrementTrackViewsArgs, 'id'>>;
@@ -309,11 +369,11 @@ export type PeopleResolvers<ContextType = DataSourceContext, ParentType extends 
 };
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  closestColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryClosestColorArgs, 'hexa'>>;
   divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
   getFilms?: Resolver<Array<Maybe<ResolversTypes['Film']>>, ParentType, ContextType>;
   getPeople?: Resolver<Array<Maybe<ResolversTypes['People']>>, ParentType, ContextType>;
   getTracks?: Resolver<Array<ResolversTypes['Track']>, ParentType, ContextType>;
+  getUsers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   multiply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
 };
 
@@ -336,13 +396,17 @@ export type TrackResolvers<ContextType = DataSourceContext, ParentType extends R
 };
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  articles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Article']>>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = DataSourceContext> = {
+  Article?: ArticleResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
+  Commentaire?: CommentaireResolvers<ContextType>;
+  CreateArticleResponse?: CreateArticleResponseResolvers<ContextType>;
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   Film?: FilmResolvers<ContextType>;
   IncrementLikesResponse?: IncrementLikesResponseResolvers<ContextType>;
