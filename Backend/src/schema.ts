@@ -1,49 +1,44 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-type Track {
+
+type User {
+  id: ID!
+  username: String!
+  article: [Article]
+  comment: [Comment]
+}
+
+type Article {
   id: ID!
   title: String!
-  author: Author!
-  thumbnail: String
-  numberOfViews: Int
+  description: String!
+  user: User
   numberOfLikes: Int
+  comment: [Comment]
 }
 
-type Author {
+type Comment {
   id: ID!
-  name: String!
-  photo: String
-}
-
-type Film {
-  id: ID!
-  title: String
-  people: [People]!
-}
-
-type People {
-  id: ID!
-  name: String
-  eyeColor: String
-  films: [Film]!
+  content: String!
+  article: Article!
+  user: User!
 }
 
 type Query {
   divide(number1: Int!, number2: Int!): Float
   multiply(number1: Int!, number2: Int!): Float
-  getTracks: [Track!]!
-  getFilms: [Film]!
-  getPeople: [People]!
-  getUsers: [User]!
 }
 
 type Mutation {
-  incrementTrackViews(id: ID!): IncrementTrackViewsResponse
-  incrementLikes(id: ID!): IncrementLikesResponse
   createUser(username: String!, password: String!): CreateUserResponse
   signIn(username: String!, password: String!): SignInResponse
   createArticle(title: String!, description: String!): CreateArticleResponse
+  createComment(articleId: ID!, content: String!): CreateCommentResponse
+  likeArticle(articleId: ID!): LikeResponse
+  likeComment(commentId: ID!): LikeResponse
+  unlikeArticle(articleId: ID!): LikeResponse
+  unlikeComment(commentId: ID!): LikeResponse
 }
 
 type CreateUserResponse {
@@ -67,38 +62,16 @@ type CreateArticleResponse {
   article: Article
 }
 
-type User {
-  id: ID!
-  username: String!
-  articles: [Article]
-}
-
-type Article {
-  id: ID!
-  title: String!
-  description: String!
-  user: User!
-  numberOfLikes: Int
-  comments: [Commentaire]
-}
-
-type Commentaire {
-  id: ID!
-  content: String!
-  article: Article!
-}
-
-type IncrementTrackViewsResponse {
+type CreateCommentResponse {
   code: Int!
   success: Boolean!
   message: String!
-  track: Track
+  comment: Comment
 }
 
-type IncrementLikesResponse {
+type LikeResponse {
   code: Int!
   success: Boolean!
   message: String!
-  track: Track
 }
 `

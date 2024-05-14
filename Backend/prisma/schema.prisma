@@ -18,21 +18,40 @@ model User {
   username String    @unique
   password String
   article  Article[]
+  comment Comment[]
+  like    Like[]
 }
 
 model Article {
-  id            String        @id @unique @default(uuid())
+  id            String    @id @unique @default(uuid())
   title         String
   description   String
   userId        String
-  commentaire   Commentaire[]
-  numberOfLikes Int           @default(0)
-  user          User          @relation(fields: [userId], references: [id])
+  comment       Comment[]
+  like         Like[]
+  numberOfLikes Int       @default(0)
+  user          User      @relation(fields: [userId], references: [id])
 }
 
-model Commentaire {
+model Comment {
   id        String  @id @unique @default(uuid())
   content   String
   articleId String
+  userId    String
+  like         Like[]
+  numberOfLikes Int       @default(0)
   article   Article @relation(fields: [articleId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id        String  @id @unique @default(uuid())
+  userId    String
+  articleId String?
+  commentId String?
+  article   Article? @relation(fields: [articleId], references: [id])
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, articleId, commentId])
 }
