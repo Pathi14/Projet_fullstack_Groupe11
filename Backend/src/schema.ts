@@ -21,13 +21,12 @@ type Article {
 type Comment {
   id: ID!
   content: String!
-  article: Article!
-  user: User!
+  article: Article
+  user: User
 }
 
 type Query {
-  divide(number1: Int!, number2: Int!): Float
-  multiply(number1: Int!, number2: Int!): Float
+  getAllArticles: [Article]
 }
 
 type Mutation {

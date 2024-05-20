@@ -9,18 +9,26 @@ import { likeComment } from "./mutations/likeComment.js";
 import { likeArticle } from "./mutations/likeArticle.js";
 import { unlikeArticle } from "./mutations/unlikeArticle.js";
 import { unlikeComment } from "./mutations/unlikeComment.js";
+import { DataSourceContext } from "./context.js";
 const prisma = new PrismaClient();
 
 
 export const resolvers: Resolvers = {
   Query: {
-    divide: (parent, {number1, number2}, context, info) => {
-      if (number2 === 0) {
-        throw new GraphQLError('cannot divide by 0')
-      }
-      return number1 / number2
+    getAllArticles: async (_, __, { dataSources }: DataSourceContext) => {
+      const articles = await dataSources.db.article.findMany({
+        include: {
+          user: true,
+          comment: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+
+      return articles;
     },
-    multiply: (parent, {number1, number2}, context, info) => number1 * number2,
   },
   Mutation: {
     createUser: createUser,

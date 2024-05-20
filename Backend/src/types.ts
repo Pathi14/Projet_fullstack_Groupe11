@@ -29,10 +29,10 @@ export type Article = {
 
 export type Comment = {
   __typename?: 'Comment';
-  article: Article;
+  article?: Maybe<Article>;
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  user: User;
+  user?: Maybe<User>;
 };
 
 export type CreateArticleResponse = {
@@ -124,20 +124,7 @@ export type MutationUnlikeCommentArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  divide?: Maybe<Scalars['Float']['output']>;
-  multiply?: Maybe<Scalars['Float']['output']>;
-};
-
-
-export type QueryDivideArgs = {
-  number1: Scalars['Int']['input'];
-  number2: Scalars['Int']['input'];
-};
-
-
-export type QueryMultiplyArgs = {
-  number1: Scalars['Int']['input'];
-  number2: Scalars['Int']['input'];
+  getAllArticles?: Maybe<Array<Maybe<Article>>>;
 };
 
 export type SignInResponse = {
@@ -233,7 +220,6 @@ export type ResolversTypes = {
   CreateArticleResponse: ResolverTypeWrapper<CreateArticleResponse>;
   CreateCommentResponse: ResolverTypeWrapper<CreateCommentResponse>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   LikeResponse: ResolverTypeWrapper<LikeResponse>;
@@ -252,7 +238,6 @@ export type ResolversParentTypes = {
   CreateArticleResponse: CreateArticleResponse;
   CreateCommentResponse: CreateCommentResponse;
   CreateUserResponse: CreateUserResponse;
-  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   LikeResponse: LikeResponse;
@@ -274,10 +259,10 @@ export type ArticleResolvers<ContextType = DataSourceContext, ParentType extends
 };
 
 export type CommentResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
-  article?: Resolver<ResolversTypes['Article'], ParentType, ContextType>;
+  article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -324,8 +309,7 @@ export type MutationResolvers<ContextType = DataSourceContext, ParentType extend
 };
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
-  multiply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
+  getAllArticles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Article']>>>, ParentType, ContextType>;
 };
 
 export type SignInResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['SignInResponse'] = ResolversParentTypes['SignInResponse']> = {
