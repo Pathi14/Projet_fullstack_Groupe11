@@ -12,7 +12,6 @@ import { unlikeComment } from "./mutations/unlikeComment.js";
 import { DataSourceContext } from "./context.js";
 const prisma = new PrismaClient();
 
-
 export const resolvers: Resolvers = {
   Query: {
     getAllArticles: async (_, __, { dataSources }: DataSourceContext) => {
@@ -24,10 +23,16 @@ export const resolvers: Resolvers = {
               user: true,
             },
           },
+          _count: {
+            select: { like: true }, // Assurez-vous que `like` est le nom correct
+          },
         },
       });
 
-      return articles;
+      return articles.map(article => ({
+        ...article,
+        numberOfLikes: article._count.like, // Correction du nom de propriété
+      }));
     },
   },
   Mutation: {
@@ -40,4 +45,4 @@ export const resolvers: Resolvers = {
     unlikeArticle: unlikeArticle,
     unlikeComment: unlikeComment,
   }
-}
+};

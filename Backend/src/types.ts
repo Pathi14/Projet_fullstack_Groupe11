@@ -61,6 +61,7 @@ export type CreateUserResponse = {
 
 export type LikeResponse = {
   __typename?: 'LikeResponse';
+  article?: Maybe<Article>;
   code: Scalars['Int']['output'];
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
@@ -291,6 +292,7 @@ export type CreateUserResponseResolvers<ContextType = DataSourceContext, ParentT
 };
 
 export type LikeResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['LikeResponse'] = ResolversParentTypes['LikeResponse']> = {
+  article?: Resolver<Maybe<ResolversTypes['Article']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;

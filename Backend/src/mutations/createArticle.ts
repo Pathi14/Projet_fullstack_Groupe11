@@ -13,13 +13,14 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, { tit
       data: {
         title,
         description,
-        user: { connect: { id: userId } }
+        user: { connect: { id: userId } },
+        numberOfLikes: 0, // Initialiser le nombre de likes à zéro
       },
     });
 
     const articleUser = {
       id: user.id,
-      username: user.username
+      username: user.username,
     };
 
     return {
@@ -30,8 +31,9 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, { tit
         id: createdArticle.id,
         title: createdArticle.title,
         description: createdArticle.description,
-        user: articleUser
-      }
+        user: articleUser,
+        numberOfLikes: createdArticle.numberOfLikes, // Ajouter le nombre de likes
+      },
     };
   } catch (error) {
     return {
@@ -42,4 +44,3 @@ export const createArticle: MutationResolvers['createArticle'] = async (_, { tit
     };
   }
 }
-

@@ -72,5 +72,6 @@ type LikeResponse {
   code: Int!
   success: Boolean!
   message: String!
+  article: Article 
 }
 `
