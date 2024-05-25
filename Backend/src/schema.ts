@@ -38,6 +38,7 @@ type Mutation {
   likeComment(commentId: ID!): LikeResponse
   unlikeArticle(articleId: ID!): LikeResponse
   unlikeComment(commentId: ID!): LikeResponse
+  deleteUser(userId: ID!): DeleteUserResponse
 }
 
 type CreateUserResponse {
@@ -69,6 +70,13 @@ type CreateCommentResponse {
 }
 
 type LikeResponse {
+  code: Int!
+  success: Boolean!
+  message: String!
+  article: Article
+}
+
+type DeleteUserResponse {
   code: Int!
   success: Boolean!
   message: String!

@@ -10,6 +10,7 @@ import { likeArticle } from "./mutations/likeArticle.js";
 import { unlikeArticle } from "./mutations/unlikeArticle.js";
 import { unlikeComment } from "./mutations/unlikeComment.js";
 import { DataSourceContext } from "./context.js";
+import { deleteUser } from "./mutations/deleteUser.js";
 const prisma = new PrismaClient();
 
 
@@ -39,5 +40,6 @@ export const resolvers: Resolvers = {
     likeComment: likeComment,
     unlikeArticle: unlikeArticle,
     unlikeComment: unlikeComment,
+    deleteUser: deleteUser,
   }
 }
