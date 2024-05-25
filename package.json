@@ -2,11 +2,11 @@
     "name": "reseau-social-ts",
     "version": "1.0.0",
     "scripts": {
-        "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-        "start:server": "cd Backend && npm start",
-        "start:client": "cd client && npm start",
-        "install:client": "cd client && npm install",
-        "install:server": "cd Backend && npm install"
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd Backend && npm start",
+        "start:frontend": "cd frontend && npm start",
+        "install:frontend": "cd frontend && npm install",
+        "install:backend": "cd Backend && npm install"
     },
     "private": true,
     "dependencies": {
