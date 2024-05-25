@@ -48,8 +48,16 @@ Suivez les étapes ci-dessous pour cloner le projet, installer les dépendances 
     ```
 
 7. Démarrez le projet.
+
+    D'abord le backend
     ```bash
-    npm start
+    cd Backend
+    npm run start
+    ```
+    Puis le frontend_
+    ```bash
+    cd frontend
+    npm run start
     ```
 
 ## Utilisation
