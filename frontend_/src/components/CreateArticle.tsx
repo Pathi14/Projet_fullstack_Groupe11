@@ -78,7 +78,7 @@ const CreateArticle: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <SubmitButton type="submit" disabled={loading}>Créer un nouvel article</SubmitButton>
           </form>
           {articleCreated && (
-            <SuccessMessage>Article créer avec succès !</SuccessMessage>
+            <SuccessMessage>Article crée avec succès !</SuccessMessage>
           )}
           {error && <p>Error: {error.message}</p>}
         </FormContainer>
